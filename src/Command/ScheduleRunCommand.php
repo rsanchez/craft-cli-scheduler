@@ -9,14 +9,12 @@ use Symfony\Component\Console\ {
     Input\InputDefinition,
     Output\OutputInterface
 };
-use CraftCli\Application;
-use CraftCli\Command\NeedsApplicationInterface;
 use Crunz\Console\Command\ScheduleRunCommand as BaseCommand;
 use Crunz\Schedule;
 use Crunz\Invoker;
 use Crunz\Configuration;
 
-class ScheduleRunCommand extends BaseCommand implements NeedsApplicationInterface
+class ScheduleRunCommand extends BaseCommand
 {
     /**
      * {@inheritdoc}
