@@ -11,7 +11,7 @@ use Symfony\Component\Console\ {
 };
 use CraftCli\Application;
 use CraftCli\Command\NeedsApplicationInterface;
-use Crunz\Console\ScheduleRunCommand as BaseCommand;
+use Crunz\Console\Command\ScheduleRunCommand as BaseCommand;
 use Crunz\Schedule;
 use Crunz\Invoker;
 use Crunz\Configuration;
