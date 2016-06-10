@@ -2,17 +2,16 @@
 
 namespace CraftCli\Scheduler\Command;
 
-use Symfony\Component\Console\ {
-    Input\InputInterface,
-    Input\InputOption,
-    Input\InputArgument,
-    Input\InputDefinition,
-    Output\OutputInterface
-};
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Output\OutputInterface;
 use Crunz\Console\Command\ScheduleRunCommand as BaseCommand;
 use Crunz\Schedule;
 use Crunz\Invoker;
 use Crunz\Configuration;
+use ReflectionProperty;
 
 class ScheduleRunCommand extends BaseCommand
 {
@@ -23,7 +22,17 @@ class ScheduleRunCommand extends BaseCommand
     {
         $this->setName('schedule:run');
         $this->setDescription('Run the cron scheduler.');
-        $this->setConfiguration(Configuration::getInstance());
+        $configuration = Configuration::getInstance();
+        $this->setConfiguration($configuration);
+
+        // crunz errors if i don't do this
+        $reflectionProperty = new ReflectionProperty($configuration, 'parameters');
+        $reflectionProperty->setAccessible(true);
+        $parameters = $reflectionProperty->getValue($configuration);
+        $parameters['log_output'] = true;
+        $parameters['output_log_file'] = '/dev/null';
+        $reflectionProperty->setValue($configuration, $parameters);
+        $reflectionProperty->setAccessible(false);
     }
 
     /**
@@ -31,7 +40,7 @@ class ScheduleRunCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $taskDir = $this->application->getConfigItem('taskDir');
+        $taskDir = $this->getApplication()->getConfigItem('taskDir');
 
         if (!$taskDir) {
             $output->writeln('<error>Missing taskDir in Craft CLI config.</error>');
@@ -49,7 +58,7 @@ class ScheduleRunCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    public function runTasks($tasks = [])
+    public function runTasks($tasks = array())
     {
         foreach ($tasks as $class) {
             $task = new $class();
