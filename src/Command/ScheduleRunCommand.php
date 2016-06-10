@@ -78,10 +78,11 @@ class ScheduleRunCommand extends BaseCommand
     /**
      * {@inheritdoc}
      */
-    public function collectTaskFiles($dir)
+    public function collectTaskFiles($ignore)
     {
-        $namespace = $this->application->getConfigItem('taskNamespace');
+        $dir = $this->getApplication()->getConfigItem('taskDir');
+        $namespace = $this->getApplication()->getConfigItem('taskNamespace');
 
-        return $this->application->findClassInDir('\\CraftCli\\Scheduler\\TaskInterface', $dir, $namespace);
+        return $this->getApplication()->findClassInDir('\\CraftCli\\Scheduler\\TaskInterface', $dir, $namespace);
     }
 }
