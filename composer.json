@@ -1,0 +1,23 @@
+{
+    "name": "craft-cli/scheduler",
+    "description": "Craft CLI plugin to run a cron scheduler",
+    "authors": [
+        {
+            "name": "Rob Sanchez",
+            "email": "info@robsanchez.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "CraftCli\\Scheduler": "src/" }
+    },
+    "require": {
+        "craft-cli/cli": ">=0.4",
+        "lavary/crunz": "^1.3"
+    },
+    "extra": {
+        "craft-cli": {
+            "namespace": "\\CraftCli\\Scheduler\\Command",
+            "commandDirs": ["src/Command"]
+        }
+    }
+}
